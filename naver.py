@@ -11,9 +11,13 @@ def naver(word):
     soup = bs4.BeautifulSoup(html)
    
     try:
-        return unicode(soup.find_all("dd")[1].get_text()).strip()
+        text = unicode(soup.find_all("dd")[1].get_text())
     except IndexError:
         return None
+    lines = text.replace('\r', '\n').split('\n')
+    lines = [line.strip() for line in lines]
+    lines = filter(lambda line: len(line) > 0, lines)
+    return u' '.join(lines)
 
 
 @client.msgevents.hook('dic')
