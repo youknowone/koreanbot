@@ -1,2 +1,2 @@
-easyirc
+easyirc==0.0.3
 beautifulsoup4

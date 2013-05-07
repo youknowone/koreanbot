@@ -21,14 +21,13 @@ def naver(word):
 
 
 @client.msgevents.hook('dic')
-@client.msgevents.hook('naver')
-def on_naver(connection, manager, sender, msgtype, target, prefix, message=None):
+@client.msgevents.hookback('naver')
+def on_naver(message=None):
     if message is None:
-        connection.sendl(msgtype, target, 'Please suggest keyword')
+        return u'Please suggest keyword'
+    result = naver(message)
+    if result is None:
+        return u'Result not found'
     else:
-        result = naver(message)
-        if result is None:
-            connection.sendl(msgtype, target, 'Result not found')
-        else:
-            connection.sendl(msgtype, target, result)
+        return result
 
