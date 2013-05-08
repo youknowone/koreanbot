@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 import bot
 
+import join
 import naver
 import source
-import help
+import trans
 
 bot.client.start()
 
