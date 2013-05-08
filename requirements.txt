@@ -1,2 +1,3 @@
-easyirc==0.0.3
+easyirc==0.0.6
+requests
 beautifulsoup4
