@@ -13,6 +13,8 @@ def daum(word, code=None):
             code = 'KUEK'
     response = requests.get('http://dic.daum.net/search.do?q=' + word)
     m = re.search(r'<div class="txt_means_' + code + r'">([^<]*)</div>', response.text)
+    if m is None:
+        return None
     return m.group(1)
 
 
