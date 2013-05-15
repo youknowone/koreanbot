@@ -9,6 +9,8 @@ visitors = make_storage('visitors.json', lambda key: key)
 
 @client.events.hookmsg(JOIN)
 def on_join(connection, sender, chan):
+    if chan != '#korean':
+        return
     identity = util.parseid(sender)
     users = visitors._get(chan)
     if not users:
