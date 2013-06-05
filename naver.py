@@ -1,6 +1,7 @@
 
 import requests
 import bs4
+import threading
 
 from bot import client
 
@@ -34,9 +35,23 @@ class lru(object):
         self.order.append(key)
         return self.cache[key]
 
+def shorten(url, resp):
+    r = requests.post('http://v.gd/create.php', {
+        'format':'json', 'url':url })
+    if r.status_code == requests.codes.ok:
+        j = r.json()
+        if 'shorturl' in j:
+            resp.append("[%s]" % j['shorturl'])
+
 def naver(word):
     word.replace(u' ', u'%20')
     url = u'http://dic.naver.com/search.nhn?query={word}'.format(word=word).encode('utf-8')
+
+    # spawn an async fetch
+    shorter = []
+    t = threading.Thread(target=shorten, args=(url, shorter))
+    t.start()
+
     r = requests.get(url)
     if r.status_code != requests.codes.ok:
         return None
@@ -49,6 +64,9 @@ def naver(word):
     lines = text.replace('\r', '\n').split('\n')
     lines = [line.strip() for line in lines]
     lines = filter(lambda line: len(line) > 0, lines)
+
+    t.join()
+    lines.extend(shorter)
     return u' '.join(lines)
 
 LRU_CACHE = lru(256)
