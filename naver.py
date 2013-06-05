@@ -1,5 +1,5 @@
 
-import urllib
+import requests
 import bs4
 
 from bot import client
@@ -7,8 +7,10 @@ from bot import client
 def naver(word):
     word.replace(u' ', u'%20')
     url = u'http://dic.naver.com/search.nhn?query={word}'.format(word=word).encode('utf-8')
-    html = urllib.urlopen(url).read()
-    soup = bs4.BeautifulSoup(html)
+    r = requests.get(url)
+    if r.status_code != requests.codes.ok:
+        return None
+    soup = bs4.BeautifulSoup(r.text)
    
     try:
         text = unicode(soup.find_all("dd")[1].get_text())
