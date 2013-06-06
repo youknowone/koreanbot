@@ -5,6 +5,8 @@ import threading
 
 from bot import client
 
+import settings
+
 class lru(object):
     def __init__(self, limit=100):
         self.limit = limit
@@ -69,7 +71,12 @@ def naver(word):
     lines.extend(shorter)
     return u' '.join(lines)
 
-LRU_CACHE = lru(256)
+try:
+    CACHE_SIZE = settings.NAVER_CACHE_SIZE
+except AttributeError:
+    CACHE_SIZE = 256
+
+LRU_CACHE = lru(CACHE_SIZE)
 
 @client.msgevents.hook('dic')
 @client.msgevents.hookback('naver')
