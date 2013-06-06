@@ -41,7 +41,7 @@ def shorten(url, resp):
     r = requests.post('http://v.gd/create.php', {
         'format':'json', 'url':url })
     if r.status_code == requests.codes.ok:
-        j = r.json()
+        j = r.json
         if 'shorturl' in j:
             resp.append("[%s]" % j['shorturl'])
 
