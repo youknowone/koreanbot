@@ -13,7 +13,7 @@ class lru(object):
         self.limit = limit
         self.order = []
         self.cache = {}
-    
+
     def add(self, key, value):
         # Already in cache, reset time
         if key in self.cache:
@@ -42,7 +42,7 @@ def shorten(url, resp):
     r = requests.post('http://v.gd/create.php', {
         'format':'json', 'url':url })
     if r.status_code == requests.codes.ok:
-        j = r.json
+        j = r.json()
         if 'shorturl' in j:
             resp.append("[%s]" % j['shorturl'])
 
@@ -59,7 +59,7 @@ def naver(word):
     if r.status_code != requests.codes.ok:
         return None
     soup = bs4.BeautifulSoup(r.text)
-   
+
     try:
         text = unicode(soup.find_all("dd")[1].get_text())
     except IndexError:
@@ -79,11 +79,11 @@ except AttributeError:
 
 LRU_CACHE = lru(CACHE_SIZE)
 
-@client.msgevents.hook('dic')
-@client.msgevents.hook(u'사전')
-@client.msgevents.hook(u'네이버')
-@client.msgevents.hookback('naver')
-def on_naver(message=None):
+@client.msgevents.hookback(u'얓')
+@client.msgevents.hookback('dic', u'사전')
+@client.msgevents.hookback('naver', u'네이버')
+def on_naver(context, message=None):
+    u"""Searches a word from Naver dictionary. Aliases: naver, 네이버, dic, 사전, 얓"""
     if message is None:
         return u'Please suggest keyword'
 

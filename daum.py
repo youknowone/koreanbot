@@ -19,9 +19,9 @@ def daum(word, code=None):
     return m.group(1)
 
 
-@client.msgevents.hook(u'다음')
-@client.msgevents.hookback('daum')
-def on_daum(message=None):
+@client.msgevents.hookback('daum', u'다음')
+def on_daum(context, message=None):
+    """Searches a word from Daum dictionary. Aliases: daum, 다음"""
     if message is None:
         return u'Please suggest keyword'
     result = daum(message)

@@ -1,4 +1,5 @@
 
+# -*- coding: utf-8 -*-
 import json
 import requests
 
@@ -31,18 +32,22 @@ def on_tr(message=None, mode=2):
         else:
             sl = 'ko'
             tl = 'en'
-    
+
     result = trans(ln, sl, tl, mode)
     if result is None:
         return u'Result not found'
     else:
         return result
 
-@client.msgevents.hookback('tr1')
-def on_tr1(message=None):
+@client.msgevents.hookback('tr1', u'번역1')
+def on_tr1(context, message=None):
+    """Translates ko <-> en with Google Translator."""
     return on_tr(message, 1)
 
-@client.msgevents.hookback('tr')
-def on_tr2(message=None):
+@client.msgevents.hookback('tr', u'번역')
+@client.msgevents.hookback('tr2', u'번역2')
+def on_tr2(context, message=None):
+    """Translates ko <-> en with Google Translator throughing Japanese."""
+    return on_tr(message, 1)
     return on_tr(message, 2)
 
