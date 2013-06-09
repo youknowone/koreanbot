@@ -1,4 +1,5 @@
 
+# -*- coding: utf-8 -*-
 import requests
 import bs4
 import threading
@@ -79,6 +80,8 @@ except AttributeError:
 LRU_CACHE = lru(CACHE_SIZE)
 
 @client.msgevents.hook('dic')
+@client.msgevents.hook(u'사전')
+@client.msgevents.hook(u'네이버')
 @client.msgevents.hookback('naver')
 def on_naver(message=None):
     if message is None:

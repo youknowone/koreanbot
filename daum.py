@@ -1,4 +1,5 @@
 
+# -*- coding: utf-8 -*-
 import re
 import requests
 
@@ -18,6 +19,7 @@ def daum(word, code=None):
     return m.group(1)
 
 
+@client.msgevents.hook(u'다음')
 @client.msgevents.hookback('daum')
 def on_daum(message=None):
     if message is None:
