@@ -4,6 +4,7 @@ import bot
 
 import join
 import naver
+import krdate
 import daum
 import source
 import trans
