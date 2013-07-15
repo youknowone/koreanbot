@@ -1,3 +1,4 @@
 easyirc==0.1.1
 requests
 beautifulsoup4
+pytz
