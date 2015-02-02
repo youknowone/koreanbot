@@ -20,7 +20,7 @@ def on_join(connection, sender, chan):
     if not name in users:
         if name[:8] == 'ChangeMe':
             connection.privmsg(chan, u'안녕하세요 {nick}님! Welcome to {chan}! You can change your name with "/nick new_name".'.format(chan=chan, nick=identity.nick))
-    	else:
+        else:
 	    connection.privmsg(chan, u'안녕하세요 {nick}님! Welcome to {chan}!'.format(chan=chan, nick=identity.nick))
             users.append(name)
             visitors._set(chan, users)
