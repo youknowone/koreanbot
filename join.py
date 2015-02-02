@@ -18,8 +18,10 @@ def on_join(connection, sender, chan):
         users = []
     name = u'!'.join((identity.nick, identity.username))
     if not name in users:
-        connection.privmsg(chan, u'안녕하세요 {nick}님! {chan}에 처음 오신 것을 환영해요. Welcome to {chan}!'.format(chan=chan, nick=identity.nick))
-        connection.notice('Pikmeir', u'New visitor! XD')
-        users.append(name)
-        visitors._set(chan, users)
-        visitors._commit()
+        if name[:8] == 'ChangeMe':
+            connection.privmsg(chan, u'안녕하세요 {nick}님! Welcome to {chan}! You can change your name with "/nick new_name".'.format(chan=chan, nick=identity.nick))
+    	else:
+	    connection.privmsg(chan, u'안녕하세요 {nick}님! Welcome to {chan}!'.format(chan=chan, nick=identity.nick))
+            users.append(name)
+            visitors._set(chan, users)
+            visitors._commit()
