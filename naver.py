@@ -52,14 +52,14 @@ def parentheses(string):
     return parens.replace('.', '')
 
 def space(string):
-	indicies = [m.start() for m in re.finditer('(\d)', string)]
-	chars = list(string)
-	i = 0
-	for x in indicies:
-		if x != 0:
-			chars.insert(x + i, ' ')
-			i = i + 1
-	return u''.join(chars)
+    indicies = [m.start() for m in re.finditer('(\d)', string)]
+    chars = list(string)
+    i = 0
+    for x in indicies:
+        if x != 0:
+            chars.insert(x + i, ' ')
+            i = i + 1
+    return u''.join(chars)
 
 def naver(word):
     word.replace(u' ', u'%20')
@@ -115,4 +115,3 @@ def on_naver(context, message=None):
     else:
         LRU_CACHE.add(message, result)
         return result
-
