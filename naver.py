@@ -3,6 +3,7 @@
 import requests
 import bs4
 import threading
+import re
 
 from bot import client
 
@@ -44,7 +45,21 @@ def shorten(url, resp):
     if r.status_code == requests.codes.ok:
         j = r.json()
         if 'shorturl' in j:
-            resp.append("[%s]" % j['shorturl'])
+            resp.append("%s" % j['shorturl'])
+
+def parentheses(string):
+    parens = re.sub(r'(\d\.)', r'(\1)', string)
+    return parens.replace('.', '')
+
+def space(string):
+    indicies = [m.start() for m in re.finditer('(\d)', string)]
+    chars = list(string)
+    i = 0
+    for x in indicies:
+        if x != 0:
+            chars.insert(x + i, ' ')
+            i = i + 1
+    return u''.join(chars)
 
 def naver(word):
     word.replace(u' ', u'%20')
@@ -69,8 +84,11 @@ def naver(word):
     lines = filter(lambda line: len(line) > 0, lines)
 
     t.join()
-    lines.extend(shorter)
-    return u' '.join(lines)
+    unspaced_definitions = u' '.join(lines)
+    definitions = parentheses(space(unspaced_definitions))
+    short_link = u''.join(shorter)
+    text = definitions + ' ' + short_link
+    return text
 
 try:
     CACHE_SIZE = settings.NAVER_CACHE_SIZE
@@ -97,4 +115,3 @@ def on_naver(context, message=None):
     else:
         LRU_CACHE.add(message, result)
         return result
-
